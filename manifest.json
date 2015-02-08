@@ -5,9 +5,9 @@
   "description": "This extension enhances the user experience on the Veracode Platform",
   "homepage_url": "https://veracode.com",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/Monster1_16BW.png",
+    "48": "icons/Monster3_48Green.png",
+    "128": "icons/Monster3_128Green.png"
   },
   "default_locale": "en",
   "background": {
@@ -17,7 +17,7 @@
     "persistent": false
   },
   "page_action": {
-    "default_icon": "icons/icon19.png",
+    "default_icon": "icons/Monster1_19BW.png",
     "default_title": "page action demo",
     "default_popup": "src/page_action/page_action.html"
   },
