@@ -1,17 +1,48 @@
 <!doctype html>
-<style type="text/css">
-	#mainPopup {
-		padding: 10px;
-		height: 200px;
-		width: 400px;
-		font-family: Helvetica, Ubuntu, Arial, sans-serif;
-	}
-	h1 {
-		font-size: 2em;
-	}
-</style>
-
-<div id="mainPopup">
-<h1>Hello extensionizr!</h1>
-<p>To shut this popup down, edit the manifest file and remove the "default popup" key. To edit it, just edit ext/page_action/page_action.html. The CSS is there, too.</p>
-</div>
+<!-- 
+  - Veracode Enhancement Suite
+  - by Matt Runkle (mrunkle@veracode.com)
+  -
+  - https://github.com/runkalicious/platform-helper
+  -->
+<html>
+    <head>
+        <title>Veracode Enhancement Suite</title>
+        <link href="../../css/common.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            body {margin: 10px;}
+            #api_login {padding: 10px 20px; width: 210px;}
+            #api_login input[type="text"], #api_login input[type="password"] {width: 150px; float: right;}
+        </style>
+        <script type="text/javascript" src="../../vendor/jquery/jquery_v2.0.0.min.js"></script>
+        <script type="text/javascript" src="page_action.js"></script>
+    </head>
+    <body>
+        <div id="header">
+            <h1>Veracode Enhancement Suite</h1>
+        </div>
+        <div id="notification" style="position: static; display: none;">
+            <span id="message">Error testing</span>
+        </div>
+        <div id="login" style="position: static; display: none;">
+            <h3>Veracode API Login</h3>
+            <form id="api_login" name="login">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" />
+                </div>
+                <div class="clear">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" />
+                </div>
+                <input type="submit" name="submit" value="Authenticate" />
+            </form>
+        </div>
+        <div id="logout" style="position: static; display: none;">
+            <a href="#">Logout</a>
+        </div>
+        <div id="footer" class="clear">
+            <p>&copy; Veracode, Inc.</p>
+        </div>
+    </body>
+</html>
