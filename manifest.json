@@ -1,0 +1,39 @@
+{
+  "name": "Veracode Enhancement Suite",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "This extension enhances the user experience on the Veracode Platform",
+  "homepage_url": "https://veracode.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "src/bg/background.js"
+    ],
+    "persistent": false
+  },
+  "page_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "page action demo",
+    "default_popup": "src/page_action/page_action.html"
+  },
+  "permissions": [
+    "https://analysiscenter.veracode.com/auth/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://analysiscenter.veracode.com/auth/*"
+      ],
+      "css": ["src/inject/inject.css"],
+      "js": [
+        "vendor/jquery/jquery_v2.0.0.min.js",
+        "src/inject/inject.js"
+      ]
+    }
+  ]
+}
