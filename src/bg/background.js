@@ -266,6 +266,22 @@ function getApplicationStatuses(sendResponse) {
     });
 }
 
+
+COLORS = {
+    'static': {
+        'background': '#18A0AB', // verablue
+        'text': '#FFFFFF'
+    },
+    'dynamic': {
+        'background': '#D73185', // verapink
+        'text': '#FFFFFF'
+    },
+    'manual': {
+        'background': '#8FBC48', // veragreen
+        'text': '#FFFFFF'
+    }
+}
+
 function getCalendarEvents(sendResponse) {
     chrome.storage.local.get('data', function(items) {
         var events = [],
@@ -275,7 +291,14 @@ function getCalendarEvents(sendResponse) {
             title = this.app_name;
             
             $(this.scans).each(function() {
-                events[i++] = {'title': title, allDay: true, start: this.date, url: this.url};
+                events[i++] = {
+                    title: title,
+                    allDay: true,
+                    start: this.date,
+                    url: this.url,
+                    color: COLORS[this.type.toLowerCase()]['background'],
+                    textColor: COLORS[this.type.toLowerCase()]['text']
+                };
             });
         });
         
