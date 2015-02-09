@@ -19,20 +19,42 @@ else if (!chrome.runtime.onMessage) {
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		
-        console.log(request);
-        
         switch (request.requestType) {
 			case 'ping':
                 sendResponse({status: true, value: 'pong'});
+                break;
+            
+            case 'login':
+                var credentials = {'apiuser': request.value[0], 'apipass': request.value[1]};
+                chrome.storage.local.set(credentials, function() {
+                    sendResponse({status: (chrome.runtime.lastError ? false : true), value: null});
+                });
+                // Notify page
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                    chrome.tabs.sendMessage(tabs[0].id, {requestType: 'loggedin'});
+                });
+                break;
+            
+            case 'loggedin':
+                chrome.storage.local.get('apiuser', function(items) {
+                    sendResponse({status: true, value: !$.isEmptyObject(items)});
+                });
+                break;
+            
+            case 'logout':
+                chrome.storage.local.remove(["apiuser", "apipass"], function() {
+                    sendResponse({status: (chrome.runtime.lastError ? false : true), value: null});
+                });
+                // Notify page
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                    chrome.tabs.sendMessage(tabs[0].id, {requestType: 'loggedout'});
+                });
                 break;
             
             case 'localStorage':
                 switch (request.action) {
                     case 'hasItem':
                         chrome.storage.local.get(request.itemName, function(items) {
-                            console.log(items);
-                            console.log($.isEmptyObject(items));
                             sendResponse({status: true, value: !$.isEmptyObject(items)});
                         });
 						break;
@@ -83,6 +105,11 @@ chrome.runtime.onMessage.addListener(
 				}
 				break;
             
+            case 'pullData':
+                getApplicationStatuses();
+                sendResponse({status: true, value: null});
+                break;
+            
 			default:
 				sendResponse({status: false, value:'unrecognized request type'});
 				break;
@@ -91,3 +118,26 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
 );
+
+function getApplicationStatuses() {
+    
+    var apiuser, apipass;
+    chrome.storage.local.get(['apiuser', 'apipass'], function(items) {
+        apiuser = items['apiuser'];
+        apipass = items['apipass'];
+        
+        $.ajax({
+            type: "POST",
+            url: "https://analysiscenter.veracode.com/api/4.0/getappbuilds.do",
+            dataType: 'xml',
+            headers: {
+                "Authorization": "Basic " + btoa(apiuser + ":" + apipass)
+            },
+            success: function(data) {
+                console.log("API hit");
+                console.log(data);
+            }
+        });
+    });
+    
+}

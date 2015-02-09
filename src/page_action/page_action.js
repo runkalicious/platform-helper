@@ -19,9 +19,8 @@ function login(e) {
     
     /* TODO sanitize input */
     
-    chrome.runtime.sendMessage({requestType: "localStorage", action: "setItem", 
-        itemValue: {"apiuser": username, "apipass": password}}, function(response)
-    {
+    chrome.runtime.sendMessage({requestType: "login", value: [username, password]}, function(response) {
+        
         if (response.status) {
             // Success
             $(LOGIN_FORM).toggle();
@@ -40,9 +39,8 @@ function login(e) {
 
 function logout(e) {
     if (e.preventDefault) e.preventDefault();
-
-    chrome.runtime.sendMessage({requestType: "localStorage", action: "deleteItem", 
-        itemName: ["apiuser", "apipass"]}, function(response) {
+    
+    chrome.runtime.sendMessage({requestType: "logout"}, function(response) {
         
         if (response.status) {
             // Success
@@ -52,6 +50,23 @@ function logout(e) {
         }
         else {
             showNotification("Error on API user logout!");
+        }
+    });
+    
+    return false;
+}
+
+function query(e) {
+    if (e.preventDefault) e.preventDefault();
+    
+    chrome.runtime.sendMessage({requestType: "pullData"}, function(response) {
+        
+        if (response.status) {
+            // Success
+            showNotification("Success on data pull!");
+        }
+        else {
+            showNotification("Error data pull!");
         }
     });
     
@@ -77,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // API user already logged in.
             $(LOGOUT_FORM).show();
             $('#api_logout').click(logout);
+            $('#query').click(query);
         }
         else {
             // No API user logged in
