@@ -19,13 +19,14 @@ function login(e) {
     
     /* TODO sanitize input */
     
-    chrome.runtime.sendMessage({requestType: "localStorage", operation: "setItems", 
-        itemNames: ["apiuser", "apipass"], itemValues: [username, password] }, function(response) {
-        
-        if (response.result) {
+    chrome.runtime.sendMessage({requestType: "localStorage", action: "setItem", 
+        itemValue: {"apiuser": username, "apipass": password}}, function(response)
+    {
+        if (response.status) {
             // Success
             $(LOGIN_FORM).toggle();
             $(LOGOUT_FORM).toggle();
+            $('#api_logout').click(logout);
             
             // TODO pull data
         }
@@ -40,18 +41,21 @@ function login(e) {
 function logout(e) {
     if (e.preventDefault) e.preventDefault();
 
-    chrome.runtime.sendMessage({requestType: "localStorage", operation: "deleteItems", 
-        itemNames: ["apiuser", "apipass"]}, function(response) {
+    chrome.runtime.sendMessage({requestType: "localStorage", action: "deleteItem", 
+        itemName: ["apiuser", "apipass"]}, function(response) {
         
-        if (response.result) {
+        if (response.status) {
             // Success
             $(LOGOUT_FORM).toggle();
+            $('#api_logout').off('click');
             $(LOGIN_FORM).toggle();
         }
         else {
             showNotification("Error on API user logout!");
         }
     });
+    
+    return false;
 }
 
 function showNotification(message) {
@@ -67,15 +71,17 @@ function hideNotification() {
 // Register the form listener
 document.addEventListener('DOMContentLoaded', function () {
     
-    chrome.runtime.sendMessage({requestType: "localStorage", operation: "hasItem", itemName: "apiuser"}, function(response) {
+    chrome.runtime.sendMessage({requestType: "localStorage", action: "hasItem", itemName: "apiuser"}, function(response) {
         
-        if (response.result) {
+        if (response.value) {
             // API user already logged in.
             $(LOGOUT_FORM).show();
+            $('#api_logout').click(logout);
         }
         else {
             // No API user logged in
             $(LOGIN_FORM).show();
+            $('#api_login').submit(login);
         }
         
     });

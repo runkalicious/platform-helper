@@ -11,8 +11,9 @@
         <link href="../../css/common.css" rel="stylesheet" type="text/css">
         <style type="text/css">
             body {margin: 10px;}
-            #api_login {padding: 10px 20px; width: 210px;}
-            #api_login input[type="text"], #api_login input[type="password"] {width: 150px; float: right;}
+            #login {padding: 10px 20px; width: 210px;}
+            #login input[type="text"], #login input[type="password"] {width: 150px; float: right;}
+            #logout {padding: 5px 20px;}
         </style>
         <script type="text/javascript" src="../../vendor/jquery/jquery_v2.0.0.min.js"></script>
         <script type="text/javascript" src="page_action.js"></script>
@@ -24,8 +25,8 @@
         <div id="notification" style="position: static; display: none;">
             <span id="message">Error testing</span>
         </div>
+        <h3>Veracode API Login</h3>
         <div id="login" style="position: static; display: none;">
-            <h3>Veracode API Login</h3>
             <form id="api_login" name="login">
                 <div>
                     <label for="username">Username</label>
@@ -39,7 +40,7 @@
             </form>
         </div>
         <div id="logout" style="position: static; display: none;">
-            <a href="#">Logout</a>
+            <a id="api_logout" href="#">Logout</a>
         </div>
         <div id="footer" class="clear">
             <p>&copy; Veracode, Inc.</p>
