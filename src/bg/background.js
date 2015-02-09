@@ -4,7 +4,14 @@
  *
  * https://github.com/runkalicious/platform-helper
  */
- 
+
+// Helper methods
+if (typeof String.prototype.startsWith != 'function') {
+	String.prototype.startsWith = function(str) {
+		return this.slice(0, str.length) == str;
+	};
+}
+
 if (!chrome.runtime) {
     // Chrome 20-21
     chrome.runtime = chrome.extension;
@@ -29,6 +36,21 @@ chrome.runtime.onInstalled.addListener(function(details) {
     }
 });
 
+//chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    
+    if (changeInfo.status != "complete" || 
+        !tab.url.startsWith("https://analysiscenter.veracode.com/auth/")) {
+        return;
+    }
+    
+    if (tab.url.search(/#ReviewResults/) > 0) {
+        chrome.tabs.sendMessage(tab.id, {requestType: 'flawviewer'});
+    }
+    
+});
+
+// Setup messaging construct
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
         switch (request.requestType) {
