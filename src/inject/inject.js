@@ -5,10 +5,12 @@
  * https://github.com/runkalicious/platform-helper
  */
 
+ // Prep VES Nav Bar Item
 $(document).ready(function() {
     setupNavigationBar();
 });
- 
+
+// Listen for extension user login (for API calls)
 chrome.runtime.sendMessage({requestType: "pageAction"}, function(response) {
     // Check if user is already logged in
     chrome.runtime.sendMessage({requestType: "loggedin"}, function(response) {
@@ -28,6 +30,11 @@ chrome.runtime.onMessage.addListener(
             case 'loggedout':
                 disableNavOptions();
                 break;
+            
+            case 'flawviewer':
+                // We are viewing triage flaws
+                enhanceFlawViewer();
+                break;
         }
         
         sendResponse({});
@@ -35,7 +42,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 function setupNavigationBar() {
-    $('ul.navbar-nav').append('<li id="VES_calendarList" class="dropdown"> \
+    $('ul.navbar-nav:first').append('<li id="VES_calendarList" class="dropdown"> \
         <a href="#" disabled class="dropdown-toggle">VES<span class="caret"></span></a> \
         <ul class="dropdown-menu"><li> \
         <a id="VES_calendarItem" href="javascript:void(0);">Show Scan Calendar</a> \
@@ -79,4 +86,9 @@ function showCalendar(e) {
         closeonbackgroundclick: true,
         dismissmodalclass: 'close-reveal-modal'
     });
+}
+
+
+function enhanceFlawViewer() {
+    console.log("Enhancements enabled");
 }
