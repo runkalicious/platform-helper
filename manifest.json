@@ -32,9 +32,14 @@
       "matches": [
         "https://analysiscenter.veracode.com/auth/*"
       ],
-      "css": ["src/inject/inject.css"],
+      "css": [
+        "vendor/fullcalendar/fullcalendar.min.css",
+        "src/inject/inject.css"
+      ],
       "js": [
         "vendor/jquery/jquery_v2.0.0.min.js",
+        "vendor/fullcalendar/lib/moment.min.js",
+        "vendor/fullcalendar/fullcalendar.min.js",
         "src/inject/inject.js"
       ]
     }
