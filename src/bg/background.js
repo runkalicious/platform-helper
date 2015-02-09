@@ -17,6 +17,18 @@ else if (!chrome.runtime.onMessage) {
     chrome.runtime.connect = chrome.extension.connect;
 }
 
+// Check whether new version is installed
+chrome.runtime.onInstalled.addListener(function(details) {
+    if (details.reason == "install") {
+        // Set default values
+        chrome.storage.local.set({'enhanceFlawViewer': true});
+    }
+    else if (details.reason == "update") {
+        var thisVersion = chrome.runtime.getManifest().version;
+        // do nothing for now
+    }
+});
+
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
         switch (request.requestType) {
