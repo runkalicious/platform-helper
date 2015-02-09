@@ -47,6 +47,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (tab.url.search(/#ReviewResults/) > 0) {
         chrome.tabs.sendMessage(tab.id, {requestType: 'flawviewer'});
     }
+    else if (tab.url.search(/#AnalyzeAppModuleList/) > 0) {
+        chrome.tabs.sendMessage(tab.id, {requestType: 'reviewmodules'});
+    }
     
 });
 

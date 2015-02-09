@@ -11,10 +11,10 @@ $(document).ready(function() {
 });
 
 // Listen for extension user login (for API calls)
-chrome.runtime.sendMessage({requestType: "pageAction"}, function(response) {
+chrome.runtime.sendMessage({requestType: "pageAction"}, function(x) {
     // Check if user is already logged in
     chrome.runtime.sendMessage({requestType: "loggedin"}, function(response) {
-        if (response.status) {
+        if (response.status && response.value) {
             enableNavOptions();
         }
     });
@@ -33,7 +33,12 @@ chrome.runtime.onMessage.addListener(
             
             case 'flawviewer':
                 // We are viewing triage flaws
-                checkForFlaws();
+                checkForLoaded(FLAW_TABLE, enhanceFlawViewer);
+                break;
+                
+            case 'reviewmodules':
+                // We are viewing Review Modules
+                checkForLoaded(MODULE_TABLE, showModuleSelectWarning);
                 break;
         }
         
@@ -91,17 +96,18 @@ function showCalendar(e) {
 /* ------------------------ */
 /* Flaw Viewer Enhancements */
 
-function checkForFlaws() {
+function checkForLoaded(element_id, func) {
    // This function will check, every tenth of a second, to see if 
    // our element is a part of the DOM tree - as soon as we know 
    // that it is, we execute the provided function.
-   if($('#appVerIssueListTable_static tbody:first').length) {
-      enhanceFlawViewer();
+   if($(element_id).length) {
+      func();
    } else {
-      setTimeout(function() { checkForFlaws(); }, 100);
+      setTimeout(function() { checkForLoaded(element_id, func); }, 100);
    }
 }
 
+FLAW_TABLE = '#appVerIssueListTable_static tbody:first';
 function enhanceFlawViewer() {
     var desc_tr = $('tr')
         .filter(function() {
@@ -121,4 +127,22 @@ function enhanceFlawViewer() {
         var markedup = $(description).text().replace(regex, repl);
         $(description).html(markedup)
     });
+}
+
+/* --------------------------- */
+/* Review Modules Enhancements */
+
+MODULE_TABLE = '#moduleListTableDiv table:first';
+function showModuleSelectWarning() {
+    if ($(MODULE_TABLE).find('input[type="checkbox"]').length) {
+        // Module selection page, display warning
+        $(MODULE_TABLE).before('<p class="ves_message">In most cases, selecting \
+            only modules developed by your organization is appropriate. \
+            <a id="ves_learnmore" href="#">Learn more</a></p>');
+        
+        $('#ves_learnmore').click(function(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            $('#scanSelThHelp-1').click();
+        });
+    }
 }
