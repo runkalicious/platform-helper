@@ -63,7 +63,8 @@ function setupAndShowCalendar(e) {
         $('body').append('<div id="VES_calendar" class="reveal-modal"><a class="close-reveal-modal">&#215;</a></div>');
         $('#VES_calendar').fullCalendar({
             fixedWeekCount: false,
-            height: 500
+            height: 500,
+            events: response.value
         });
         
         $(e.target).off('click');

@@ -187,7 +187,7 @@ function getApplicationStatuses(sendResponse) {
                             'results': $(this).attr('results_ready'),
                             'compliance': $(this).attr('policy_compliance_status'),
                             'type': $(results).attr('analysis_type'),
-                            'date': $(results).attr('published_date_sec'),
+                            'date': $(results).attr('published_date'),
                             'status': $(results).attr('status')
                         }
                         app['scans'][j++] = scan;
@@ -210,8 +210,17 @@ function getApplicationStatuses(sendResponse) {
 
 function getCalendarEvents(sendResponse) {
     chrome.storage.local.get('data', function(items) {
-        console.log(items);
+        var events = [],
+            title,
+            i = 0;
+        $(items['data']).each(function() {
+            title = this.app_name;
+            
+            $(this.scans).each(function() {
+                events[i++] = {'title': title, allDay: true, start: this.date};
+            });
+        });
         
-        sendResponse({status: false, value: null});
+        sendResponse({status: true, value: events});
     });
 }
