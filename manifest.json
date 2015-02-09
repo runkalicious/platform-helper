@@ -35,25 +35,14 @@
       "css": [
         "vendor/fullcalendar/fullcalendar.min.css",
         "vendor/reveal/reveal.css",
-        "src/inject/calendar.css"
+        "src/inject/inject.css"
       ],
       "js": [
         "vendor/jquery/jquery_v2.0.0.min.js",
         "vendor/reveal/jquery.reveal.js",
         "vendor/fullcalendar/lib/moment.min.js",
         "vendor/fullcalendar/fullcalendar.min.js",
-        "src/inject/calendar.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://analysiscenter.veracode.com/auth/index.jsp#ReviewResults*Flaws:*"
-      ],
-      "css": [
-        "src/inject/flaws.css"
-      ],
-      "js": [
-        "src/inject/flaws.js"
+        "src/inject/inject.js"
       ]
     }
   ]
