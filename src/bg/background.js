@@ -79,7 +79,7 @@ chrome.runtime.onMessage.addListener(
                 break;
             
             case 'logout':
-                chrome.storage.local.remove(["apiuser", "apipass", "data_date"], function() {
+                chrome.storage.local.remove(["apiuser", "apipass", "data_date", "data"], function() {
                     sendResponse({status: (chrome.runtime.lastError ? false : true), value: null});
                 });
                 // Notify page
@@ -203,6 +203,7 @@ function getApplicationStatuses(sendResponse) {
         $.ajax({
             type: "POST",
             url: "https://analysiscenter.veracode.com/api/4.0/getappbuilds.do",
+            data: {'include_in_progress': true},
             dataType: 'xml',
             headers: {
                 "Authorization": "Basic " + btoa(items['apiuser'] + ":" + items['apipass'])
@@ -211,11 +212,15 @@ function getApplicationStatuses(sendResponse) {
                 var applications = [];
                 var app, scan, results, i = 0;
                 
+                console.log(data);
+                
                 // Save the relevant data pieces to the store
                 $xml = $(data);
                 $xml.find('application').each(function() {
-                    var j = 0;
+                    var j = 0,
+                        modified_date = $(this).attr('modified_date');
                     app = {'app_name': $(this).attr('app_name'), 'scans': []}
+                    
                     
                     $(this).find('build').each(function() {
                         results = $(this).find('analysis_unit');
@@ -224,9 +229,15 @@ function getApplicationStatuses(sendResponse) {
                             'results': $(this).attr('results_ready'),
                             'compliance': $(this).attr('policy_compliance_status'),
                             'type': $(results).attr('analysis_type'),
-                            'date': $(results).attr('published_date'),
                             'status': $(results).attr('status')
                         }
+                        if (scan['results'] === 'true') {
+                            scan['date'] = $(results).attr('published_date');
+                        }
+                        else {
+                            scan['date'] = modified_date;
+                        }
+                        
                         app['scans'][j++] = scan;
                     });
                     
