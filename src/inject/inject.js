@@ -53,16 +53,24 @@ function disableNavOptions() {
 }
 
 function setupAndShowCalendar(e) {
-    $('body').append('<div id="VES_calendar" class="reveal-modal"><a class="close-reveal-modal">&#215;</a></div>');
-    $('#VES_calendar').fullCalendar({
-        fixedWeekCount: false,
-        height: 500
+    chrome.runtime.sendMessage({requestType: "calendarEvents"}, function(response) {
+        
+        if (!response.status) {
+            console.log("Error retrieving calendar events");
+            return;
+        }
+        
+        $('body').append('<div id="VES_calendar" class="reveal-modal"><a class="close-reveal-modal">&#215;</a></div>');
+        $('#VES_calendar').fullCalendar({
+            fixedWeekCount: false,
+            height: 500
+        });
+        
+        $(e.target).off('click');
+        $(e.target).click(showCalendar);
+        
+        showCalendar(e);
     });
-    
-    $(e.target).off('click');
-    $(e.target).click(showCalendar);
-    
-    showCalendar(e);
 }
 
 function showCalendar(e) {

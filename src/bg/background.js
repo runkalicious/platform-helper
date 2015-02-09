@@ -114,6 +114,10 @@ chrome.runtime.onMessage.addListener(
                 getApplicationStatuses(sendResponse);
                 break;
             
+            case 'calendarEvents':
+                getCalendarEvents(sendResponse);
+                break;
+            
 			default:
 				sendResponse({status: false, value:'unrecognized request type'});
 				break;
@@ -167,10 +171,33 @@ function getApplicationStatuses(sendResponse) {
                 "Authorization": "Basic " + btoa(items['apiuser'] + ":" + items['apipass'])
             },
             success: function(data) {
-                // TODO save data
+                var applications = [];
+                var app, scan, results, i = 0;
+                
+                // Save the relevant data pieces to the store
+                $xml = $(data);
+                $xml.find('application').each(function() {
+                    var j = 0;
+                    app = {'app_name': $(this).attr('app_name'), 'scans': []}
+                    
+                    $(this).find('build').each(function() {
+                        results = $(this).find('analysis_unit');
+                        scan = {
+                            'scan_name': $(this).attr('version'),
+                            'results': $(this).attr('results_ready'),
+                            'compliance': $(this).attr('policy_compliance_status'),
+                            'type': $(results).attr('analysis_type'),
+                            'date': $(results).attr('published_date_sec'),
+                            'status': $(results).attr('status')
+                        }
+                        app['scans'][j++] = scan;
+                    });
+                    
+                    applications[i++] = app;
+                });
                 
                 var timestamp = getTimestamp();
-                chrome.storage.local.set({'data_date': timestamp}, function() {
+                chrome.storage.local.set({'data_date': timestamp, 'data': applications}, function() {
                     sendResponse({status: (chrome.runtime.lastError ? false : true), value: timestamp});
                 });
             },
@@ -178,5 +205,13 @@ function getApplicationStatuses(sendResponse) {
                 sendResponse({status: false, value: null});
             }
         });
+    });
+}
+
+function getCalendarEvents(sendResponse) {
+    chrome.storage.local.get('data', function(items) {
+        console.log(items);
+        
+        sendResponse({status: false, value: null});
     });
 }
