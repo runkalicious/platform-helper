@@ -44,7 +44,7 @@ function setupNavigationBar() {
 
 function enableNavOptions() {
     $('#VES_calendarItem').click(function(e) {
-        showCalendar(e);
+        setupAndShowCalendar(e);
     });
 }
 
@@ -52,22 +52,22 @@ function disableNavOptions() {
     $('#VES_calendarList a').off('click');
 }
 
-function showCalendar(e) {
-    $('body').append('<div id="VES_calendar"></div>');
+function setupAndShowCalendar(e) {
+    $('body').append('<div id="VES_calendar" class="reveal-modal"><a class="close-reveal-modal">&#215;</a></div>');
     $('#VES_calendar').fullCalendar({
-        // put your options and callbacks here
+        fixedWeekCount: false,
+        height: 500
     });
     
     $(e.target).off('click');
-    $(e.target).text('Hide Scan Calendar')
-        .click(hideCalendar);
+    $(e.target).click(showCalendar);
+    
+    showCalendar(e);
 }
 
-function hideCalendar(e) {
-    $('#VES_calendar').fullCalendar('destroy');
-    $('#VES_calendar').remove();
-    
-    $(e.target).off('click');
-    $(e.target).text('Show Scan Calendar')
-        .click(showCalendar);
+function showCalendar(e) {
+    $('#VES_calendar').reveal({
+        closeonbackgroundclick: true,
+        dismissmodalclass: 'close-reveal-modal'
+    });
 }

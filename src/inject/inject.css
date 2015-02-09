@@ -2,13 +2,7 @@
  * Place your custom CSS styles here.
  **/
 
-#VES_calendar {
-    margin: 20px;
-    background-color: #fff;
+.reveal-modal {
     width: 750px;
-    height: 500px;
-    position: fixed;
-    left: 100;
-    top: 100;
-    z-index: 0;
+    margin-left: -400px;
 }
