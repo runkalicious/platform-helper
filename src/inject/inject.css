@@ -6,3 +6,10 @@
     width: 750px;
     margin-left: -400px;
 }
+
+.ves_code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+}

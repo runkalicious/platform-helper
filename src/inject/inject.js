@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(
             
             case 'flawviewer':
                 // We are viewing triage flaws
-                enhanceFlawViewer();
+                checkForFlaws();
                 break;
         }
         
@@ -88,7 +88,37 @@ function showCalendar(e) {
     });
 }
 
+/* ------------------------ */
+/* Flaw Viewer Enhancements */
+
+function checkForFlaws() {
+   // This function will check, every tenth of a second, to see if 
+   // our element is a part of the DOM tree - as soon as we know 
+   // that it is, we execute the provided function.
+   if($('#appVerIssueListTable_static tbody:first').length) {
+      enhanceFlawViewer();
+   } else {
+      setTimeout(function() { checkForFlaws(); }, 100);
+   }
+}
 
 function enhanceFlawViewer() {
-    console.log("Enhancements enabled");
+    var desc_tr = $('tr')
+        .filter(function() {
+            return this.id.match(/d\d+_\w+/);
+        });
+    
+    var description,
+        regex = /(.+ call to )(\S+)(.+\. The \w+ argument to )(\S+)(.+ variable )(\S+)(\..+ earlier call to )(\S+)(\.)/,
+        repl = '$1<span class="ves_code">$2</span>$3<span class="ves_code">$4</span>$5<span class="ves_code">$6</span>$7<span class="ves_code">$8</span>$9';
+    $(desc_tr).each(function() {
+        description = $(this)
+            .find('span')
+            .filter(function() {
+                return this.id.match(/flawDescription\d+/);
+            });
+        
+        var markedup = $(description).text().replace(regex, repl);
+        $(description).html(markedup)
+    });
 }
