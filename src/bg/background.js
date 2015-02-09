@@ -61,7 +61,7 @@ chrome.runtime.onMessage.addListener(
 				switch (request.action) {
 					case 'show':
 						// we intentionally fall through after this to stateChange
-						chrome.pageAction.show(sender.tab.id);
+                        chrome.pageAction.show(sender.tab.id);
                         sendResponse({status: true, value: null});
                         break;
 					
@@ -69,6 +69,17 @@ chrome.runtime.onMessage.addListener(
 						chrome.pageAction.hide(sender.tab.id);
                         sendResponse({status: true, value: null});
 						break;
+                        
+                    default:
+                        // Autoselect - most common
+                        var currentURL = sender.tab.url
+                        if (currentURL.search("helpcenter") > 0) {
+                            chrome.pageAction.hide(sender.tab.id);
+                        }
+                        else {
+                            chrome.pageAction.show(sender.tab.id);
+                        }
+                        sendResponse({status: true, value: null});
 				}
 				break;
             
