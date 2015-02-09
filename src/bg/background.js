@@ -211,16 +211,21 @@ function getApplicationStatuses(sendResponse) {
             success: function(data) {
                 var applications = [];
                 var app, scan, results, i = 0;
-                
-                console.log(data);
+                var base_url = "https://analysiscenter.veracode.com/auth/index.jsp#HomeAppProfile:";
                 
                 // Save the relevant data pieces to the store
                 $xml = $(data);
+                
+                base_url += $xml.find('applicationbuilds').attr('account_id') + ":";
+                
                 $xml.find('application').each(function() {
-                    var j = 0,
-                        modified_date = $(this).attr('modified_date');
-                    app = {'app_name': $(this).attr('app_name'), 'scans': []}
-                    
+                    var j = 0;
+                    app = {
+                        'app_name': $(this).attr('app_name'), 
+                        'app_id': $(this).attr('app_id'),
+                        'modified_date': $(this).attr('modified_date'),
+                        'scans': []
+                    }
                     
                     $(this).find('build').each(function() {
                         results = $(this).find('analysis_unit');
@@ -231,12 +236,17 @@ function getApplicationStatuses(sendResponse) {
                             'type': $(results).attr('analysis_type'),
                             'status': $(results).attr('status')
                         }
+                        
+                        // Get the date the scan completed, or the modified date if still running
                         if (scan['results'] === 'true') {
                             scan['date'] = $(results).attr('published_date');
                         }
                         else {
-                            scan['date'] = modified_date;
+                            scan['date'] = app['modified_date'];
                         }
+                        
+                        // Construct link to app profile on platform
+                        scan['url'] = base_url + app['app_id'] + ":" + $(this).attr('build_id') + ":";
                         
                         app['scans'][j++] = scan;
                     });
@@ -265,7 +275,7 @@ function getCalendarEvents(sendResponse) {
             title = this.app_name;
             
             $(this.scans).each(function() {
-                events[i++] = {'title': title, allDay: true, start: this.date};
+                events[i++] = {'title': title, allDay: true, start: this.date, url: this.url};
             });
         });
         
