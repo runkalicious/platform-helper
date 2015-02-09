@@ -20,3 +20,31 @@
     font-weight: bold;
     text-align: center;
 }
+
+#VES_calendar_key{
+    margin-top: 10px;
+}
+
+#VES_calendar_key .swatch {
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+#VES_calendar_key .swatch_label {
+    margin: 10px 5px 5px 0px;
+    float: left;
+}
+
+#VES_calendar_key .verablue {
+    background-color: #18A0AB;
+}
+
+#VES_calendar_key .verapink {
+    background-color: #D73185;
+}
+
+#VES_calendar_key .veragreen {
+    background-color: #8FBC48;
+}
