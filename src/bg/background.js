@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener(
                 break;
             
             case 'logout':
-                chrome.storage.local.remove(["apiuser", "apipass"], function() {
+                chrome.storage.local.remove(["apiuser", "apipass", "data_date"], function() {
                     sendResponse({status: (chrome.runtime.lastError ? false : true), value: null});
                 });
                 // Notify page
@@ -67,7 +67,12 @@ chrome.runtime.onMessage.addListener(
                     
                     case 'getItem':
                         chrome.storage.local.get(request.itemName, function(items) {
-                            sendResponse({status: true, value: items});
+                            if ($.isEmptyObject(items)) {
+                                sendResponse({status: true, value: null});
+                            } 
+                            else {
+                                sendResponse({status: true, value: items});
+                            }
                         });
 						break;
                     
@@ -106,8 +111,7 @@ chrome.runtime.onMessage.addListener(
 				break;
             
             case 'pullData':
-                getApplicationStatuses();
-                sendResponse({status: true, value: null});
+                getApplicationStatuses(sendResponse);
                 break;
             
 			default:
@@ -119,25 +123,60 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-function getApplicationStatuses() {
+// http://www.webdevelopersnotes.com/tips/html/formatting_time_using_javascript.php3
+var m_names = new Array("January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December");
+function getTimestamp() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth();
+    var curr_year = d.getFullYear();
+    var curr_hour = d.getHours();
+    var curr_min = d.getMinutes();
     
-    var apiuser, apipass;
+    var a_p = "";
+    if (curr_hour < 12) {
+        a_p = "AM";
+    }
+    else {
+        a_p = "PM";
+    }
+    if (curr_hour == 0) {
+        curr_hour = 12;
+    }
+    if (curr_hour > 12) {
+        curr_hour = curr_hour - 12;
+    }
+    
+    curr_min = curr_min + "";
+    if (curr_min.length == 1) {
+        curr_min = "0" + curr_min;
+    }
+    
+    return m_names[curr_month] + " " + curr_date + ", " + curr_year + 
+        " " + curr_hour + ":" + curr_min + " " + a_p;
+}
+
+function getApplicationStatuses(sendResponse) {
     chrome.storage.local.get(['apiuser', 'apipass'], function(items) {
-        apiuser = items['apiuser'];
-        apipass = items['apipass'];
-        
         $.ajax({
             type: "POST",
             url: "https://analysiscenter.veracode.com/api/4.0/getappbuilds.do",
             dataType: 'xml',
             headers: {
-                "Authorization": "Basic " + btoa(apiuser + ":" + apipass)
+                "Authorization": "Basic " + btoa(items['apiuser'] + ":" + items['apipass'])
             },
             success: function(data) {
-                console.log("API hit");
-                console.log(data);
+                // TODO save data
+                
+                var timestamp = getTimestamp();
+                chrome.storage.local.set({'data_date': timestamp}, function() {
+                    sendResponse({status: (chrome.runtime.lastError ? false : true), value: timestamp});
+                });
+            },
+            fail: function(data) {
+                sendResponse({status: false, value: null});
             }
         });
     });
-    
 }

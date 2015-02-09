@@ -11,9 +11,13 @@
         <link href="../../css/common.css" rel="stylesheet" type="text/css">
         <style type="text/css">
             body {margin: 10px;}
+            h1 {padding: 0;}
+            #notification {margin-top: 5px;}
+            #message {color: #8FBC48;}
+            .error {color: #D73185;}
             #login {padding: 10px 20px; width: 210px;}
             #login input[type="text"], #login input[type="password"] {width: 150px; float: right;}
-            #logout {padding: 5px 20px;}
+            .indent {padding: 5px 20px;}
         </style>
         <script type="text/javascript" src="../../vendor/jquery/jquery_v2.0.0.min.js"></script>
         <script type="text/javascript" src="page_action.js"></script>
@@ -23,7 +27,7 @@
             <h1>Veracode Enhancement Suite</h1>
         </div>
         <div id="notification" style="position: static; display: none;">
-            <span id="message">Error testing</span>
+            <span id="message"></span>
         </div>
         <h3>Veracode API Login</h3>
         <div id="login" style="position: static; display: none;">
@@ -39,9 +43,15 @@
                 <input type="submit" name="submit" value="Authenticate" />
             </form>
         </div>
+        
         <div id="logout" style="position: static; display: none;">
-            <a id="api_logout" href="#">Logout</a>
-            <a id="query" href="#">Do Query</a>
+            <div class="indent">
+                <a id="api_logout" href="#">Logout</a>
+            </div>
+            <h3>Application Data</h3>
+            <div class="indent">
+                <span id="lastpulled"></span> - <a id="query" href="#">Refresh</a>
+            </div>
         </div>
         <div id="footer" class="clear">
             <p>&copy; Veracode, Inc.</p>
