@@ -44,6 +44,19 @@
     float: left;
 }
 
+.ves_sorting {
+    margin: 10px 0px 5px;
+    float: right;
+}
+
+.ves_sorting p {
+    font-weight: bold;
+}
+
+.ves_sorting select, .ves_sorting option {
+    width: 100px;
+}
+
 .ves_tooltip {
     padding: 5px;
     color: #555;

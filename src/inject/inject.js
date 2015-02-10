@@ -127,6 +127,20 @@ function setupAndShowCalendar(e) {
             }
         });
         
+        $('.fc-toolbar').after(
+            '<div class="ves_sorting"> \
+            <p>Show:</p> \
+            <select id="ves_scan_filter"><option value="all" selected>All Scans</option> \
+            <option value="static">Static</option> \
+            <option value="dynamic">Dynamic</option> \
+            <option value="manual">Manual</option></select></div> \
+            <div class="clear"></div>'
+        );
+        $('#ves_scan_filter').change(function() {
+            var selection = $( "#ves_scan_filter option:selected" ).val();
+            showCalendarEventsByType(selection);
+        });
+        
         $(e.target).off('click');
         $(e.target).click(showCalendar);
         
@@ -138,6 +152,32 @@ function showCalendar(e) {
     $('#VES_calendar').reveal({
         closeonbackgroundclick: true,
         dismissmodalclass: 'close-reveal-modal'
+    });
+}
+
+function showCalendarEventsByType(evt_type) {
+    var selector;
+    switch(evt_type) {
+        case 'static':
+            selector = '.ves_static';
+            break;
+        case 'dynamic':
+            selector = '.ves_dynamic';
+            break;
+        case 'manual':
+            selector = '.ves_manual';
+            break;
+        default:
+            selector = '.ves_static, .ves_dynamic, .ves_manual';
+    }
+    
+    $('td.fc-event-container').each(function() {
+        if ($(this).has(selector).length) {
+            $(this).css( "display", "block" );
+        }
+        else {
+            $(this).css( "display", "none" );
+        }
     });
 }
 
