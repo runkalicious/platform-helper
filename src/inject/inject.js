@@ -47,6 +47,15 @@ chrome.runtime.onMessage.addListener(
 );
 
 function setupNavigationBar() {
+    // Inject reference to font-awesome
+    var fa = document.createElement('style');
+    fa.type = 'text/css';
+    fa.textContent = '@font-face { font-family: FontAwesome; src: url("'
+        + chrome.extension.getURL('vendor/fa/fonts/fontawesome-webfont.woff?v=4.0.3')
+        + '"); }';
+    document.head.appendChild(fa);
+    
+    // Setup navigation menu item
     $('ul.navbar-nav:first').append('<li id="VES_calendarList" class="dropdown"> \
         <a href="#" disabled class="dropdown-toggle">VES<span class="caret"></span></a> \
         <ul class="dropdown-menu"><li> \
@@ -142,9 +151,9 @@ MODULE_TABLE = '#moduleListTableDiv table:first';
 function showModuleSelectWarning() {
     if ($(MODULE_TABLE).find('input[type="checkbox"]').length) {
         // Module selection page, display warning
-        $(MODULE_TABLE).before('<p class="ves_message">Selecting third-party modules \
-            will scan the entire code space, including sections unused by your program. \
-            <a id="ves_learnmore" href="#">Learn more</a></p>');
+        $(MODULE_TABLE).before('<p class="ves_message"><i class="fa fa-info-circle"></i> \
+            Selecting third-party modules will scan the entire code space, including sections \
+            unused by your program. <a id="ves_learnmore" href="#">Learn more</a></p>');
         
         $('#ves_learnmore').click(function(e) {
             if (e && e.preventDefault) e.preventDefault();
