@@ -31,6 +31,10 @@ chrome.runtime.onMessage.addListener(
                 disableNavOptions();
                 break;
             
+            case 'resetcalendar':
+                resetCalendar();
+                break;
+            
             case 'flawviewer':
                 // We are viewing triage flaws
                 checkForLoaded(FLAW_TABLE, enhanceFlawViewer);
@@ -153,6 +157,13 @@ function showCalendar(e) {
         closeonbackgroundclick: true,
         dismissmodalclass: 'close-reveal-modal'
     });
+}
+
+function resetCalendar() {
+    $('#VES_calendar').fullCalendar( 'destroy' );
+    
+    $('#VES_calendarItem').off('click');
+    $('#VES_calendarItem').click(setupAndShowCalendar);
 }
 
 function showCalendarEventsByType(evt_type) {
