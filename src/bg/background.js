@@ -294,6 +294,7 @@ function getCalendarEvents(sendResponse) {
                 
                 events[i++] = {
                     title: title,
+                    description: this.status,
                     allDay: true,
                     start: this.date,
                     url: this.url,

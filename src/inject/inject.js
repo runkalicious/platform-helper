@@ -97,7 +97,23 @@ function setupAndShowCalendar(e) {
             defaultView: 'month',
             fixedWeekCount: false,
             height: 500,
-            events: response.value
+            events: response.value,
+            eventMouseover: function(calEvent, jsEvent) {
+                var tooltip = '<div class="ves_tooltip"><span class="status">' + calEvent.description + '</span>: ' + calEvent.title + '</div>';
+                $("body").append(tooltip);
+                $(this).mouseover(function(e) {
+                    $(this).css('z-index', 10000);
+                    $('.ves_tooltip').fadeIn('500');
+                    $('.ves_tooltip').fadeTo('10', 1.9);
+                }).mousemove(function(e) {
+                    $('.ves_tooltip').css('top', e.pageY + 10);
+                    $('.ves_tooltip').css('left', e.pageX + 20);
+                });
+            },
+            eventMouseout: function(calEvent, jsEvent) {
+                $(this).css('z-index', 8);
+                $('.ves_tooltip').remove();
+            }
         });
         
         $(e.target).off('click');

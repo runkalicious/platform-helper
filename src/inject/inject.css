@@ -39,6 +39,21 @@
     float: left;
 }
 
+.ves_tooltip {
+    padding: 5px;
+    color: #555;
+    background: #fff;
+    position: absolute;
+    z-index: 10001;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.ves_tooltip .status {
+    color: #06c;
+}
+
 .fc-event,
 a.fc-event,
 a.fc-event:link,
