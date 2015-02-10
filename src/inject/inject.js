@@ -89,6 +89,12 @@ function setupAndShowCalendar(e) {
                 <div class="swatch veragreen"></div><p class="swatch_label">Manual Scan</p> \
             </div></div>');
         $('#VES_calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            defaultView: 'month',
             fixedWeekCount: false,
             height: 500,
             events: response.value
