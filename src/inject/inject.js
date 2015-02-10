@@ -142,8 +142,8 @@ MODULE_TABLE = '#moduleListTableDiv table:first';
 function showModuleSelectWarning() {
     if ($(MODULE_TABLE).find('input[type="checkbox"]').length) {
         // Module selection page, display warning
-        $(MODULE_TABLE).before('<p class="ves_message">In most cases, selecting \
-            only modules developed by your organization is appropriate. \
+        $(MODULE_TABLE).before('<p class="ves_message">Selecting third-party modules \
+            will scan the entire code space, including sections unused by your program. \
             <a id="ves_learnmore" href="#">Learn more</a></p>');
         
         $('#ves_learnmore').click(function(e) {

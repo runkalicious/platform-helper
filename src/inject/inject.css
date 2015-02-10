@@ -9,9 +9,8 @@
 
 .ves_code {
     font-family: "Courier New", Courier, monospace;
-    font-size: 12px;
-    font-weight: bold;
-    font-style: italic;
+    font-size: 14px;
+    font-weight: bolder;
 }
 
 .ves_message {
