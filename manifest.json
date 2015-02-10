@@ -27,6 +27,9 @@
     "storage",
     "tabs"
   ],
+  "web_accessible_resources": [
+    "vendor/fa/fonts/*fontawesome-webfont.woff"
+  ],
   "content_scripts": [
     {
       "matches": [
@@ -37,9 +40,6 @@
         "vendor/fa/css/font-awesome.min.css",
         "vendor/reveal/reveal.css",
         "src/inject/inject.css"
-      ],
-      "web_accessible_resources": [
-        "vendor/fa/fonts/fontawesome-webfont.woff"
       ],
       "js": [
         "vendor/jquery/jquery_v2.0.0.min.js",
