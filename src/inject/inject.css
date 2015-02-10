@@ -20,6 +20,9 @@
     text-align: center;
 }
 
+/* --------------- */
+/* CALENDAR STYLES */
+
 #VES_calendar_key{
     margin-top: 10px;
 }
@@ -36,14 +39,87 @@
     float: left;
 }
 
-#VES_calendar_key .verablue {
-    background-color: #18A0AB;
+.fc-event,
+a.fc-event,
+a.fc-event:link,
+a.fc-event:active,
+a.fc-event:hover,
+a.fc-event:visited {
+    font-size: 1em;
+    color: #FFFFFF;
 }
 
-#VES_calendar_key .verapink {
-    background-color: #D73185;
+.ves_static {
+    background-color: #18A0AB; /* varablue */
+    border: 1px solid #18A0AB;
 }
 
-#VES_calendar_key .veragreen {
-    background-color: #8FBC48;
+.ves_dynamic {
+    background-color: #D73185; /* verapink */
+    border: 1px solid #D73185;
+}
+
+.ves_manual {
+    background-color: #8FBC48; /* veragreen */
+    border: 1px solid #8FBC48;
+}
+
+/* Status icons */
+.fc-title {
+    position: relative;
+    padding-left: 15px;
+}
+
+.fc-title:before {
+    position: absolute;
+    font-family: FontAwesome;
+    top: 1px;
+    left: 1px;
+}
+
+.ves_incomplete  .fc-title:before {
+    content: "\f071"; /* exclamation-triangle */
+}
+
+.ves_no_modules_defined  .fc-title:before,
+.ves_scan_on_hold  .fc-title:before,
+.ves_not_submitted_to_engine .fc-title:before {
+    content: "\f129"; /* info */
+}
+
+.ves_pre-scan_submitted  .fc-title:before,
+.ves_submitted_to_engine  .fc-title:before,
+.ves_scan_in_process  .fc-title:before,
+.ves_pending_internal_review  .fc-title:before {
+    content: "\f085"; /* gears */
+}
+
+.ves_pre-scan_success  .fc-title:before {
+    content: "\f058"; /* check-circle */
+}
+
+.ves_results_ready  .fc-title:before {
+    content: "\f00c"; /* check */
+}
+
+.ves_pre-scan_failed .fc-title:before {
+    content: "\f057"; /* times-circle */
+}
+
+.ves_scan_errors .fc-title:before,
+.ves_scan_internal_error .fc-title:before {
+    content: "\f00d"; /* times */
+}
+
+.ves_prescan_cancelled  .fc-title:before {
+    content: "\f056"; /* minus-circle */
+}
+
+.ves_scan_cancelled  .fc-title:before {
+    content: "\f068"; /* minus */
+}
+
+.ves_pending_vendor_confirmation  .fc-title:before,
+.ves_vendor_reviewing  .fc-title:before {
+    content: "\f059"; /* question-circle */
 }

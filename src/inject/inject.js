@@ -84,9 +84,9 @@ function setupAndShowCalendar(e) {
         $('body').append('<div id="VES_calendar" class="reveal-modal">\
             <a class="close-reveal-modal">&#215;</a> \
             <div id="VES_calendar_key"> \
-                <div class="swatch verablue"></div><p class="swatch_label">Static Scan</p> \
-                <div class="swatch verapink"></div><p class="swatch_label">Dynamic Scan</p> \
-                <div class="swatch veragreen"></div><p class="swatch_label">Manual Scan</p> \
+                <div class="swatch ves_static"></div><p class="swatch_label">Static Scan</p> \
+                <div class="swatch ves_dynamic"></div><p class="swatch_label">Dynamic Scan</p> \
+                <div class="swatch ves_manual"></div><p class="swatch_label">Manual Scan</p> \
             </div></div>');
         $('#VES_calendar').fullCalendar({
             header: {

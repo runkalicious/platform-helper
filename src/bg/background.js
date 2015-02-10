@@ -291,13 +291,16 @@ function getCalendarEvents(sendResponse) {
             title = this.app_name;
             
             $(this.scans).each(function() {
+                
                 events[i++] = {
                     title: title,
                     allDay: true,
                     start: this.date,
                     url: this.url,
-                    color: COLORS[this.type.toLowerCase()]['background'],
-                    textColor: COLORS[this.type.toLowerCase()]['text']
+                    className: [
+                        'ves_' + this.status.toLowerCase().replace(/\s/g, '_'),
+                        'ves_' + this.type.toLowerCase(),
+                    ]
                 };
             });
         });
