@@ -87,6 +87,17 @@ function setupAndShowCalendar(e) {
                 <div class="swatch ves_static"></div><p class="swatch_label">Static Scan</p> \
                 <div class="swatch ves_dynamic"></div><p class="swatch_label">Dynamic Scan</p> \
                 <div class="swatch ves_manual"></div><p class="swatch_label">Manual Scan</p> \
+                <div class="clear"></div> \
+                <p class="icon"><i class="fa fa-check"></i> Results Ready</p> \
+                <p class="icon"><i class="fa fa-check-circle"></i> Pre-scan Success</p> \
+                <p class="icon"><i class="fa fa-gears"></i> In Process</p> \
+                <p class="icon"><i class="fa fa-times"></i> Scan Error</p> \
+                <p class="icon"><i class="fa fa-times-circle"></i> Pre-scan Error</p> \
+                <p class="icon"><i class="fa fa-minus"></i> Scan Cancelled</p> \
+                <p class="icon"><i class="fa fa-minus-circle"></i> Pre-scan Cancelled</p> \
+                <p class="icon"><i class="fa fa-exclamation-triangle"></i> Incomplete</p> \
+                <p class="icon"><i class="fa fa-info"></i> On Hold/Not Submitted</p> \
+                <p class="icon"><i class="fa fa-question-circle"></i> Vendor Review</p> \
             </div></div>');
         $('#VES_calendar').fullCalendar({
             header: {
